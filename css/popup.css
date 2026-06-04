@@ -281,11 +281,8 @@ h1 {
 .search-wrapper {
   padding: 8px 10px;
   border-bottom: 1px solid var(--glass-border);
-  position: sticky;
-  top: 0;
   background: #1c1c2e;
   border-radius: 15px 15px 0 0;
-  z-index: 1;
 }
 
 .lang-search {
@@ -342,8 +339,8 @@ h1 {
   border-bottom: none;
 }
 
-.option:first-child {
-  border-radius: 15px 15px 0 0;
+.search-wrapper + .option {
+  border-radius: 0;
 }
 
 .option:last-child {

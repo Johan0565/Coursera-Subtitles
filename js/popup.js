@@ -45,7 +45,10 @@ document.addEventListener("DOMContentLoaded", () => {
     e.stopPropagation();
     const wasOpen = container.classList.contains("open");
     container.classList.toggle("open");
-    if (!wasOpen) requestAnimationFrame(() => langSearch.focus());
+    if (!wasOpen) {
+      document.getElementById("optionsMenu").scrollTop = 0;
+      requestAnimationFrame(() => langSearch.focus());
+    }
   });
 
   langSearch.addEventListener("click", (e) => e.stopPropagation());
