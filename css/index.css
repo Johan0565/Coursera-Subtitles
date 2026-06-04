@@ -281,6 +281,37 @@ h1 {
   z-index: 100;
 }
 
+.search-wrapper {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--glass-border);
+  position: sticky;
+  top: 0;
+  background: #1c1c2e;
+  border-radius: 15px 15px 0 0;
+  z-index: 1;
+}
+
+.lang-search {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-size: 13px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.lang-search::placeholder {
+  color: var(--text-3);
+}
+
+.lang-search:focus {
+  border-color: rgba(10, 132, 255, 0.6);
+  background: rgba(255, 255, 255, 0.1);
+}
+
 .options-menu::-webkit-scrollbar {
   width: 4px;
 }
@@ -295,7 +326,7 @@ h1 {
 }
 
 .dropdown-container.open .options-menu {
-  max-height: 220px;
+  max-height: 270px;
   opacity: 1;
   pointer-events: all;
 }
@@ -324,6 +355,18 @@ h1 {
 
 .option:hover {
   background: rgba(10, 132, 255, 0.22);
+}
+
+.option.active {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.option.active::after {
+  content: "✓";
+  font-size: 13px;
+  color: var(--accent);
+  float: right;
 }
 
 /* ── iOS Toggle ────────────────────────────────────────────── */
