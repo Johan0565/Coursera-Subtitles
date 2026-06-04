@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Coursera Subtitle Extension</title>
-    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/popup.css" />
   </head>
   <body>
     <div id="main-div">
@@ -20,6 +20,7 @@
         <p class="tagline">Live Translation</p>
       </header>
 
+      <!-- Language + Bilingual -->
       <div class="glass-card">
         <div class="dropdown-container" id="dropdownContainer">
           <div class="row-item">
@@ -87,6 +88,11 @@
           </label>
         </div>
       </div>
+
+      <!-- Status / onboarding hint -->
+      <p class="status-hint" id="statusHint">
+        Open a Coursera video with English subtitles, then click Translate.
+      </p>
 
       <input type="hidden" id="lang" value="fa" />
 

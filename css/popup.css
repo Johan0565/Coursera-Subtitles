@@ -24,15 +24,13 @@
 
 html {
   width: 320px;
-  height: 520px;
-  background: transparent; /* lets the OS show through corner triangles */
+  background: transparent;
 }
 
 body {
   width: 320px;
-  height: 520px;
   overflow: hidden;
-  border-radius: 22px; /* clips content to rounded shape at the window level */
+  border-radius: 22px;
   background: var(--bg);
 }
 
@@ -73,7 +71,6 @@ body::after {
 
 #main-div {
   width: 320px;
-  height: 520px;
   margin: 0;
   padding: 26px 22px 22px;
 
@@ -509,4 +506,22 @@ footer a {
 
 footer a:hover {
   color: var(--text-2);
+}
+
+/* ── Status / Onboarding Hint ──────────────────────────────── */
+
+.status-hint {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-3);
+  text-align: center;
+  line-height: 1.4;
+  padding: 0 4px;
+  position: relative;
+  z-index: 1;
+  transition: color 0.2s;
+}
+
+.status-hint.translated {
+  color: rgba(10, 132, 255, 0.75);
 }
