@@ -1,206 +1,469 @@
 :root {
-  /* iOS 26 Deep Dark Theme */
-  --bg-color: #000000; /* Deep black to blend with browser */
-  --card-bg: #1c1c1e;
-  --accent: #007aff;
-  --accent-gradient: linear-gradient(135deg, #007aff, #5856d6);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --text-main: #ffffff;
-  --text-sec: #8e8e93;
+  --bg: #06060f;
+  --glass: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.11);
+  --glass-highlight: rgba(255, 255, 255, 0.2);
+  --accent: #0a84ff;
+  --accent-end: #5e5ce6;
+  --text: #ffffff;
+  --text-2: rgba(255, 255, 255, 0.5);
+  --text-3: rgba(255, 255, 255, 0.25);
   --spring: cubic-bezier(0.3, 1.5, 0.5, 1);
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 1. THE BIG FIX: Set a fixed height for the window */
-html,
-body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--bg-color);
-  width: 320px;
-  height: 450px;
-  overflow: hidden;
-}
-
-* {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: -apple-system, "SF Pro Display", system-ui, sans-serif;
+  font-family: -apple-system, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-/* The Container */
-#main-div {
-  width: 300px;
-  height: 430px;
-  margin: 10px auto;
-  background: var(--card-bg);
-  border-radius: 35px;
-  padding: 25px;
-  border: 1px solid var(--glass-border);
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  position: relative;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+html {
+  width: 320px;
+  height: 520px;
+  background: transparent; /* lets the OS show through corner triangles */
 }
 
+body {
+  width: 320px;
+  height: 520px;
+  overflow: hidden;
+  border-radius: 22px; /* clips content to rounded shape at the window level */
+  background: var(--bg);
+}
+
+/* Ambient color blobs — the "light source" behind the glass */
+body::before {
+  content: "";
+  position: fixed;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(10, 132, 255, 0.45) 0%,
+    transparent 65%
+  );
+  top: -90px;
+  left: -70px;
+  pointer-events: none;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(94, 92, 230, 0.38) 0%,
+    transparent 65%
+  );
+  bottom: -60px;
+  right: -60px;
+  pointer-events: none;
+}
+
+/* ── Main Glass Card ───────────────────────────────────────── */
+
+#main-div {
+  width: 320px;
+  height: 520px;
+  margin: 0;
+  padding: 26px 22px 22px;
+
+  background: rgba(16, 16, 28, 0.72);
+  backdrop-filter: blur(60px) saturate(180%);
+  -webkit-backdrop-filter: blur(60px) saturate(180%);
+
+  border-radius: 22px;
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    0 24px 56px rgba(0, 0, 0, 0.55),
+    0 4px 16px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  position: relative;
+}
+
+/* Top-edge sheen — a hallmark of Liquid Glass */
+#main-div::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.055) 0%,
+    transparent 45%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Header ────────────────────────────────────────────────── */
+
 header {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding-top: 2px;
+  position: relative;
+  z-index: 1;
 }
 
 .app-icon {
-  width: 50px;
-  height: 50px;
-  background: var(--accent-gradient);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 20px;
-  box-shadow: 0 5px 15px rgba(0, 122, 255, 0.3);
+  width: 58px;
+  height: 58px;
+  border-radius: 17px;
+  overflow: hidden;
+  box-shadow:
+    0 10px 28px rgba(10, 132, 255, 0.28),
+    0 2px 8px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
+
 .app-icon-png {
-  width: 50px;
-  height: 50px;
-}
-
-h1 {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text-main);
-  letter-spacing: -0.5px;
-}
-
-.label {
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--text-sec);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-left: 5px;
-  margin-bottom: 10px;
+  width: 58px;
+  height: 58px;
   display: block;
 }
 
-/* DROPDOWN SYSTEM */
+h1 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.4px;
+}
+
+.tagline {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-2);
+  letter-spacing: 0.1px;
+}
+
+/* ── Glass Control Card ────────────────────────────────────── */
+
+.glass-card {
+  background: var(--glass);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border-radius: 20px;
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    0 2px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 20; /* must exceed translateBtn/resetBtn (z-index:1) so the dropdown paints above them */
+}
+
+.card-divider {
+  height: 1px;
+  background: var(--glass-border);
+  margin: 0 16px;
+}
+
+/* ── Row Items ─────────────────────────────────────────────── */
+
+.row-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px;
+  gap: 12px;
+}
+
+.row-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.1px;
+}
+
+.row-sub {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-2);
+  margin-top: 2px;
+}
+
+.row-info {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Language Dropdown ─────────────────────────────────────── */
+
 .dropdown-container {
   position: relative;
-  z-index: 1000;
+  z-index: 10;
 }
 
 .custom-select {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 14px;
-  padding: 12px 15px;
-  color: var(--text-main);
-  cursor: pointer;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 6px 10px 6px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.09);
   border: 1px solid var(--glass-border);
-  transition: 0.2s;
+  transition: background 0.18s;
+  white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .custom-select:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.custom-select span {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .arrow-icon {
-  width: 10px;
-  height: 10px;
-  border-right: 2px solid var(--text-sec);
-  border-bottom: 2px solid var(--text-sec);
-  transform: rotate(45deg);
-  transition: 0.3s var(--spring);
-  margin-top: -4px;
+  width: 7px;
+  height: 7px;
+  border-right: 1.5px solid var(--text-2);
+  border-bottom: 1.5px solid var(--text-2);
+  transform: rotate(45deg) translateY(-1px);
+  transition: transform 0.25s var(--spring);
+  flex-shrink: 0;
 }
 
 .dropdown-container.open .arrow-icon {
-  transform: rotate(-135deg);
-  margin-top: 4px;
+  transform: rotate(-135deg) translateY(-1px);
 }
 
-/* The Menu - It now opens downwards within the body height */
 .options-menu {
   position: absolute;
-  top: calc(100% + 5px);
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  left: 0;
+  top: calc(100% + 6px);
   right: 0;
-  background: #2c2c2e;
-  border-radius: 14px;
+  min-width: 200px;
+
+  /* Solid background — nested backdrop-filter inside other backdrop-filter
+     parents breaks in Chrome, so we use an opaque surface instead */
+  background: #1c1c2e;
+  border-radius: 16px;
   border: 1px solid var(--glass-border);
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.7),
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+
   max-height: 0;
   overflow-y: auto;
   opacity: 0;
-  transition: all 0.3s var(--spring);
   pointer-events: none;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition:
+    max-height 0.3s var(--ease),
+    opacity 0.2s var(--ease);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  z-index: 100;
 }
 
 .options-menu::-webkit-scrollbar {
-  display: none;
+  width: 4px;
+}
+
+.options-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.options-menu::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
 }
 
 .dropdown-container.open .options-menu {
-  max-height: 200px;
+  max-height: 220px;
   opacity: 1;
   pointer-events: all;
 }
 
 .option {
-  padding: 12px 15px;
-  color: #fff;
-  font-size: 14px;
+  padding: 11px 16px;
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--text);
   cursor: pointer;
-  transition: 0.2s;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  transition: background 0.12s;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.option:last-child {
+  border-bottom: none;
+}
+
+.option:first-child {
+  border-radius: 15px 15px 0 0;
+}
+
+.option:last-child {
+  border-radius: 0 0 15px 15px;
 }
 
 .option:hover {
-  background: var(--accent);
+  background: rgba(10, 132, 255, 0.22);
 }
 
-/* Start Button */
+/* ── iOS Toggle ────────────────────────────────────────────── */
+
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background 0.28s, border-color 0.28s;
+}
+
+.toggle-slider::before {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  left: 2px;
+  top: 2px;
+  background: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.3s var(--spring);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.toggle input:checked + .toggle-slider {
+  background: var(--accent);
+  border-color: transparent;
+}
+
+.toggle input:checked + .toggle-slider::before {
+  transform: translateX(20px);
+}
+
+/* ── Translate Button ──────────────────────────────────────── */
+
 #translateBtn {
-  background: var(--accent-gradient);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-end) 100%);
   color: white;
   border: none;
-  padding: 16px;
+  padding: 15px 20px;
   border-radius: 18px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
+  letter-spacing: -0.2px;
   cursor: pointer;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  transition: 0.3s var(--spring);
-  margin-top: 5px;
-  box-shadow: 0 10px 20px rgba(0, 122, 255, 0.2);
+  gap: 8px;
+
+  box-shadow:
+    0 8px 28px rgba(10, 132, 255, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+
+  transition: transform 0.2s var(--spring), box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Glass sheen on the button */
+#translateBtn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    transparent 55%
+  );
+  pointer-events: none;
 }
 
 #translateBtn:active {
-  transform: scale(0.95);
+  transform: scale(0.97);
+  box-shadow: 0 4px 14px rgba(10, 132, 255, 0.2);
 }
+
+/* ── Reset Button ──────────────────────────────────────────── */
+
+#resetBtn {
+  background: var(--glass);
+  color: var(--text-2);
+  border: 1px solid var(--glass-border);
+  padding: 13px 20px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  z-index: 1;
+
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: background 0.18s, color 0.18s, transform 0.15s;
+}
+
+#resetBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text);
+}
+
+#resetBtn:active {
+  transform: scale(0.98);
+}
+
+/* ── Footer ────────────────────────────────────────────────── */
 
 footer {
   text-align: center;
-  margin-top: 5px;
-  opacity: 0.4;
-}
-footer a {
-  font-size: 10px;
-  color: var(--text-sec);
-  text-decoration: none;
+  margin-top: auto;
+  position: relative;
+  z-index: 1;
 }
 
-/* Custom Scrollbar */
-.options-menu::-webkit-scrollbar {
-  width: 3px;
+footer a {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-3);
+  text-decoration: none;
+  letter-spacing: 0.1px;
+  transition: color 0.18s;
 }
-.options-menu::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+
+footer a:hover {
+  color: var(--text-2);
 }

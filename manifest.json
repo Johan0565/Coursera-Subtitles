@@ -1,9 +1,9 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Coursera Subtitle Extensions",
   "description": "Hello, this is a project to change the language of courses subtitles because I noticed that many people have trouble due to the lack of subtitles in their native language. I thought to myself that I could create a subtitle translator using Google Translate API",
-  "version": "0.0.1.0",
-  "browser_action": {
+  "version": "0.0.2.0",
+  "action": {
     "default_popup": "index.html",
     "default_icon": {
       "16": "images/16.png",
@@ -22,10 +22,6 @@
       "js": ["js/main.js"]
     }
   ],
-  "background": {
-    "scripts": ["js/main.js"],
-    "persistent": false
-  },
   "permissions": ["tabs", "storage", "activeTab"],
   "host_permissions": ["https://translate.googleapis.com/*"]
 }

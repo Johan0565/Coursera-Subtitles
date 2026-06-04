@@ -16,67 +16,87 @@
             alt="Coursera Subtitle Extension Icon"
           />
         </div>
-        <h1>Coursera Subtitle Extension</h1>
+        <h1>Coursera Subtitles</h1>
+        <p class="tagline">Live Translation</p>
       </header>
 
-      <div class="dropdown-container" id="dropdownContainer">
-        <span class="label">Translate to</span>
-        <div class="custom-select" id="selectTrigger">
-          <span id="selectedLabel">Persian</span>
-          <div class="arrow-icon"></div>
+      <div class="glass-card">
+        <div class="dropdown-container" id="dropdownContainer">
+          <div class="row-item">
+            <span class="row-label">Language</span>
+            <div class="custom-select" id="selectTrigger">
+              <span id="selectedLabel">Persian</span>
+              <div class="arrow-icon"></div>
+            </div>
+          </div>
+          <div class="options-menu" id="optionsMenu">
+            <div class="option" data-value="fa">Persian</div>
+            <div class="option" data-value="ar">Arabic</div>
+            <div class="option" data-value="bg">Bulgarian</div>
+            <div class="option" data-value="ca">Catalan</div>
+            <div class="option" data-value="zh-CN">Chinese (Simplified)</div>
+            <div class="option" data-value="zh-TW">Chinese (Traditional)</div>
+            <div class="option" data-value="cs">Czech</div>
+            <div class="option" data-value="da">Danish</div>
+            <div class="option" data-value="nl">Dutch</div>
+            <div class="option" data-value="en">English</div>
+            <div class="option" data-value="fi">Finnish</div>
+            <div class="option" data-value="fr">French</div>
+            <div class="option" data-value="de">German</div>
+            <div class="option" data-value="el">Greek</div>
+            <div class="option" data-value="hi">Hindi</div>
+            <div class="option" data-value="hu">Hungarian</div>
+            <div class="option" data-value="id">Indonesian</div>
+            <div class="option" data-value="it">Italian</div>
+            <div class="option" data-value="ja">Japanese</div>
+            <div class="option" data-value="ko">Korean</div>
+            <div class="option" data-value="no">Norwegian</div>
+            <div class="option" data-value="pl">Polish</div>
+            <div class="option" data-value="pt">Portuguese</div>
+            <div class="option" data-value="ro">Romanian</div>
+            <div class="option" data-value="ru">Russian</div>
+            <div class="option" data-value="es">Spanish</div>
+            <div class="option" data-value="sv">Swedish</div>
+            <div class="option" data-value="th">Thai</div>
+            <div class="option" data-value="tr">Turkish</div>
+            <div class="option" data-value="uk">Ukrainian</div>
+            <div class="option" data-value="vi">Vietnamese</div>
+          </div>
         </div>
-        <div class="options-menu" id="optionsMenu">
-          <div class="option" data-value="fa">Persian</div>
-          <div class="option" data-value="ar">Arabic</div>
-          <div class="option" data-value="bg">Bulgarian</div>
-          <div class="option" data-value="ca">Catalan</div>
-          <div class="option" data-value="zh-CN">Chinese (Simplified)</div>
-          <div class="option" data-value="zh-TW">Chinese (Traditional)</div>
-          <div class="option" data-value="cs">Czech</div>
-          <div class="option" data-value="da">Danish</div>
-          <div class="option" data-value="nl">Dutch</div>
-          <div class="option" data-value="en">English</div>
-          <div class="option" data-value="fi">Finnish</div>
-          <div class="option" data-value="fr">French</div>
-          <div class="option" data-value="de">German</div>
-          <div class="option" data-value="el">Greek</div>
-          <div class="option" data-value="hi">Hindi</div>
-          <div class="option" data-value="hu">Hungarian</div>
-          <div class="option" data-value="id">Indonesian</div>
-          <div class="option" data-value="it">Italian</div>
-          <div class="option" data-value="ja">Japanese</div>
-          <div class="option" data-value="ko">Korean</div>
-          <div class="option" data-value="no">Norwegian</div>
-          <div class="option" data-value="pl">Polish</div>
-          <div class="option" data-value="pt">Portuguese</div>
-          <div class="option" data-value="ro">Romanian</div>
-          <div class="option" data-value="ru">Russian</div>
-          <div class="option" data-value="es">Spanish</div>
-          <div class="option" data-value="sv">Swedish</div>
-          <div class="option" data-value="th">Thai</div>
-          <div class="option" data-value="tr">Turkish</div>
-          <div class="option" data-value="uk">Ukrainian</div>
-          <div class="option" data-value="vi">Vietnamese</div>
+
+        <div class="card-divider"></div>
+
+        <div class="row-item">
+          <div class="row-info">
+            <span class="row-label">Bilingual Mode</span>
+            <span class="row-sub">Translation + English</span>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="bilingualToggle" />
+            <span class="toggle-slider"></span>
+          </label>
         </div>
       </div>
 
       <input type="hidden" id="lang" value="fa" />
 
       <button id="translateBtn">
-        <span>Start Translation</span>
+        <span>Translate</span>
         <svg
-          width="16"
-          height="16"
+          width="15"
+          height="15"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="white"
-          stroke-width="3"
+          stroke="currentColor"
+          stroke-width="2.5"
           stroke-linecap="round"
           stroke-linejoin="round"
         >
           <path d="M5 12h14M12 5l7 7-7 7"></path>
         </svg>
       </button>
+
+      <button id="resetBtn">Reset Subtitles</button>
 
       <footer>
         <a href="https://amiransarpour.ir/" target="_blank">Amir Ansarpour</a>
