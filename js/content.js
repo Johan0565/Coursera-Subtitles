@@ -154,7 +154,7 @@ async function translateChunks(chunks, lang) {
 
 // ── Core translation ────────────────────────────────────────────────────────
 
-async function openBilingual(bilingual) {
+async function openBilingual(bilingual, langOverride) {
   if (isTranslating) return "busy";
   isTranslating = true;
 
@@ -183,7 +183,7 @@ async function openBilingual(bilingual) {
 
     return await new Promise((resolve) => {
       chrome.storage.sync.get(["lang"], async (s) => {
-        const targetLang = s.lang || "fa";
+        const targetLang = langOverride || s.lang || "fa";
         const cacheKey   = `${location.href}|${targetLang}|${bilingual}`;
 
         try {
@@ -298,7 +298,7 @@ function resetSubtitles() {
 
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   if (request.method === "translate") {
-    openBilingual(request.bilingual).then((status) => sendResponse({ status }));
+    openBilingual(request.bilingual, request.lang).then((status) => sendResponse({ status }));
     return true;
   }
   if (request.method === "reset") {
