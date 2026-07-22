@@ -132,10 +132,12 @@ Polling is used instead of a fixed delay because cue loading time varies — pol
 Translating each cue as a separate HTTP request would generate hundreds of API calls for a typical lecture. Instead, the extension concatenates all cue texts into a single string with indexed markers between them:
 
 ```
-"Welcome to the course ⟦0⟧ In this lesson we cover arrays ⟦1⟧ Let's begin ⟦2⟧ ..."
+"⟦0⟧ Welcome to the course ⟦1⟧ In this lesson we cover arrays ⟦2⟧ Let's begin ⟦3⟧"
 ```
 
-`⟦n⟧` (Mathematical White Square Brackets, Unicode U+27E6 and U+27E7) are chosen as markers for three reasons:
+Each marker precedes its cue, and one final sentinel marker closes the last
+cue's range. `⟦n⟧` (Mathematical White Square Brackets, Unicode U+27E6 and
+U+27E7) are chosen as markers for three reasons:
 
 1. They never appear in natural subtitle text
 2. Google Translate preserves them verbatim — they are not treated as translatable content

@@ -2,6 +2,7 @@
 
 const CHUNK_SIZE  = 4500;
 const CONCURRENCY = 2;
+const CACHE_VERSION = 2;
 
 // ⟦n⟧ markers (Mathematical White Square Brackets) are preserved by all
 // translation APIs and never appear in natural subtitle text.
@@ -191,7 +192,12 @@ async function openBilingual(bilingual) {
             chrome.storage.local.get(["translationCache"], (r) => res(r.translationCache || {}))
           );
           const cached = store[cacheKey];
-          if (cached && Date.now() - cached.ts < 7 * 864e5) {
+          if (
+            cached &&
+            cached.version === CACHE_VERSION &&
+            cached.cues.length === cues.length &&
+            Date.now() - cached.ts < 7 * 864e5
+          ) {
             for (let i = 0; i < cues.length; i++) {
               if (cached.cues[i] !== undefined) cues[i].text = cached.cues[i];
             }
@@ -201,7 +207,14 @@ async function openBilingual(bilingual) {
           }
 
           // ── Build chunks ───────────────────────────────────────────────
-          const segments = originalCues.map((text, i) => text.replace(/\n/g, " ") + ` ${marker(i)} `);
+          // Put each marker before its cue. The parser below reads the text
+          // between marker(i) and marker(i + 1), so suffix markers would shift
+          // every translation one cue earlier than the speaker.
+          const segments = originalCues.map(
+            (text, i) => `${marker(i)} ${text.replace(/\n/g, " ")} `,
+          );
+          // A final sentinel closes the last cue's range.
+          segments.push(marker(originalCues.length));
           const chunks = [];
           let current = "";
           for (const seg of segments) {
@@ -233,7 +246,10 @@ async function openBilingual(bilingual) {
           }
 
           // ── Save to cache (cap at 100 entries) ─────────────────────────
-          const newStore = { ...store, [cacheKey]: { cues: finalCues, ts: Date.now() } };
+          const newStore = {
+            ...store,
+            [cacheKey]: { cues: finalCues, ts: Date.now(), version: CACHE_VERSION },
+          };
           const keys = Object.keys(newStore);
           if (keys.length > 100) delete newStore[keys.sort((a, b) => newStore[a].ts - newStore[b].ts)[0]];
           chrome.storage.local.set({ translationCache: newStore });
