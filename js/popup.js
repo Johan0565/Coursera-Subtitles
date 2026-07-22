@@ -125,34 +125,42 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.style.opacity       = "0.7";
       btn.style.pointerEvents = "none";
 
-      chrome.storage.sync.set({ lang, bilingual });
-
-      progressInterval = setInterval(() => {
-        chrome.storage.local.get(["translationProgress"], (r) => {
-          const p = r.translationProgress;
-          if (p && p.total > 1) btnText.textContent = `Translating… ${p.done} / ${p.total}`;
-        });
-      }, 400);
-
-      chrome.tabs.sendMessage(tab.id, { method: "translate", bilingual }, (response) => {
-        clearInterval(progressInterval);
-        progressInterval = null;
-        btn.style.opacity       = "1";
-        btn.style.pointerEvents = "all";
-
-        const status = response?.status;
-        if (chrome.runtime.lastError || !response || status === "error") {
+      chrome.storage.sync.set({ lang, bilingual }, () => {
+        if (chrome.runtime.lastError) {
           btnText.textContent = "Failed — try again";
+          btn.style.opacity       = "1";
+          btn.style.pointerEvents = "all";
           setTimeout(() => { btnText.textContent = orig; }, 2500);
-        } else if (status === "busy") {
-          btnText.textContent = "Already translating…";
-          setTimeout(() => { btnText.textContent = orig; }, 2000);
-        } else {
-          const name = LANG_NAMES[lang] || lang;
-          btnText.textContent    = "Re-translate";
-          statusHint.textContent = `Active: subtitles translated to ${name}`;
-          statusHint.classList.add("translated");
+          return;
         }
+
+        progressInterval = setInterval(() => {
+          chrome.storage.local.get(["translationProgress"], (r) => {
+            const p = r.translationProgress;
+            if (p && p.total > 1) btnText.textContent = `Translating… ${p.done} / ${p.total}`;
+          });
+        }, 400);
+
+        chrome.tabs.sendMessage(tab.id, { method: "translate", lang, bilingual }, (response) => {
+          clearInterval(progressInterval);
+          progressInterval = null;
+          btn.style.opacity       = "1";
+          btn.style.pointerEvents = "all";
+
+          const status = response?.status;
+          if (chrome.runtime.lastError || !response || status === "error") {
+            btnText.textContent = "Failed — try again";
+            setTimeout(() => { btnText.textContent = orig; }, 2500);
+          } else if (status === "busy") {
+            btnText.textContent = "Already translating…";
+            setTimeout(() => { btnText.textContent = orig; }, 2000);
+          } else {
+            const name = LANG_NAMES[lang] || lang;
+            btnText.textContent    = "Re-translate";
+            statusHint.textContent = `Active: subtitles translated to ${name}`;
+            statusHint.classList.add("translated");
+          }
+        });
       });
     });
   });
